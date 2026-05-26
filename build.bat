@@ -2,15 +2,28 @@
 setlocal
 pushd "%~dp0"
 
-rem Find JDK bin dir from wherever javac lives
-for /f "tokens=*" %%i in ('where javac 2^>nul') do set JAVAC_PATH=%%i
-if not defined JAVAC_PATH (
-    echo ERROR: javac not found. Install JDK 25 from https://adoptium.net
-    popd & exit /b 1
+rem Find JDK bin dir: JAVA_HOME > where jar > where javac
+if defined JAVA_HOME (
+    set JDK_BIN=%JAVA_HOME%\bin\
+    goto :found_jdk
 )
-for %%i in ("%JAVAC_PATH%") do set JDK_BIN=%%~dpi
+for /f "tokens=*" %%i in ('where jar 2^>nul') do ( set _TMP=%%i & goto :jar_found )
+:jar_found
+if defined _TMP ( for %%i in ("%_TMP%") do set JDK_BIN=%%~dpi & goto :found_jdk )
+for /f "tokens=*" %%i in ('where javac 2^>nul') do ( set _TMP=%%i & goto :javac_found )
+:javac_found
+if defined _TMP ( for %%i in ("%_TMP%") do set JDK_BIN=%%~dpi & goto :found_jdk )
+echo ERROR: JDK not found. Install JDK 25 and set JAVA_HOME.
+popd & exit /b 1
+:found_jdk
 set JAVAC="%JDK_BIN%javac.exe"
 set JAR="%JDK_BIN%jar.exe"
+if not exist "%JDK_BIN%jar.exe" (
+    echo ERROR: jar.exe not found in %JDK_BIN%
+    echo Set JAVA_HOME to your JDK installation directory, e.g.:
+    echo   set JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-25.0.1.9-hotspot
+    popd & exit /b 1
+)
 
 echo =^> Compiling...
 if not exist "out" mkdir "out"

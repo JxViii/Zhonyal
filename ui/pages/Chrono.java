@@ -54,7 +54,6 @@ public class Chrono extends JWindow {
   private Timer ticker;
 
   private Boolean isCollapsed;
-  private final JPanel filler = new JPanel();
 
   public Chrono(Frame owner, Session session) {
 

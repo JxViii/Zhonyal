@@ -39,7 +39,7 @@ cat > "$APPS_DIR/zhonyal.desktop" << EOF
 Name=Zhonyal
 Comment=Study session tracker
 Exec=$INSTALL_DIR/zhonyal
-Icon=$INSTALL_DIR/images/Icon.png
+Icon=$INSTALL_DIR/images/Logo.png
 Type=Application
 Categories=Education;
 Terminal=false
