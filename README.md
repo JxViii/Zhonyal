@@ -159,7 +159,7 @@ All data is stored locally on your machine:
 |---|---|
 | Sessions database | `~/.local/share/zhonyal/zhonyal.db` |
 | User profile | `~/.zhonyal/user.properties` |
-| Notes (PDFs) | wherever you have them — Zhonyal stores paths, not copies |
+| Notes (PDFs) | `~/.zhonyal/files/*` |
 
 Uninstalling is just:
 
