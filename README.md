@@ -34,55 +34,64 @@ A desktop study tracker built with Java Swing. Track your sessions, manage your 
 
 ## Requirements
 
-| | Version |
-|---|---|
-| Java (to run) | 17 or later |
-| Java JDK (to build from source) | **25** — required, lower versions will not compile |
+| | Linux | Windows |
+|---|---|---|
+| To run | Java 17+ | Nothing — JRE is bundled in the release |
+| To build from source | JDK **25** | JDK **25** |
 
-Download Java: [adoptium.net](https://adoptium.net)
+Download JDK 25: [adoptium.net](https://adoptium.net)
 
 ---
 
-## Install from release
+## Install on Windows
 
-Download the latest `zhonyal-x.x.x.zip` from [Releases](https://github.com/JxViii/Zhonyal/releases) and extract it.
+1. Download `Zhonyal-x.x.x-windows.zip` from [Releases](https://github.com/JxViii/Zhonyal/releases)
+2. Extract the zip anywhere you want
+3. Open the `Zhonyal` folder and double-click `Zhonyal.exe`
 
-**Linux**
+No Java installation needed — the JRE is bundled inside the zip.
+
+---
+
+## Install on Linux
+
+Download `zhonyal-x.x.x.zip` from [Releases](https://github.com/JxViii/Zhonyal/releases), extract it, and run:
+
 ```bash
 bash zhonyal-x.x.x/install.sh
 ```
-Zhonyal will appear in your application launcher. Data lives at `~/.local/share/zhonyal/`.
 
-**Windows**
-```powershell
-powershell -ExecutionPolicy Bypass -File zhonyal-x.x.x\install.ps1
-```
-Zhonyal will appear in the Start Menu. Data lives at `%LOCALAPPDATA%\Zhonyal\`.
+Zhonyal will appear in your application launcher. Data lives at `~/.local/share/zhonyal/`.
 
 ---
 
 ## Build from source
 
+**Linux**
 ```bash
 git clone https://github.com/JxViii/Zhonyal.git
 cd Zhonyal
 bash install.sh
 ```
 
-This compiles the project, builds a fat JAR, copies assets to `~/.local/share/zhonyal/`, and installs a `.desktop` entry for your launcher.
-
-To just build the JAR without installing:
-
-```bash
-bash build.sh
-# output: dist/zhonyal.jar
+**Windows** — requires JDK 25, run in Command Prompt:
+```bat
+git clone https://github.com/JxViii/Zhonyal.git
+cd Zhonyal
+package-windows.bat 1.0.0
 ```
+This produces `dist\Zhonyal-1.0.0-windows.zip` — extract it and run `Zhonyal.exe`.
 
-To create a release zip (for both Linux and Windows):
-
+**Create a Linux release zip:**
 ```bash
 bash package.sh 1.0.0
 # output: dist/zhonyal-1.0.0.zip
+```
+
+**Create a Windows release zip** (run on Windows):
+```bat
+package-windows.bat 1.0.0
+# output: dist\Zhonyal-1.0.0-windows.zip
 ```
 
 ---
@@ -140,10 +149,12 @@ Zhonyal/
 ├── fonts/                  # Bundled typefaces
 ├── lib/                    # Dependencies (fat-jar'd on build)
 │
-├── build.sh                # Compile + build fat JAR (Linux/Mac)
+├── build.sh                # Compile + build fat JAR (Linux)
+├── build.bat               # Compile + build fat JAR (Windows)
 ├── install.sh              # Build + install on Linux
-├── install.ps1             # Install on Windows
-└── package.sh              # Build + package release zip
+├── install.ps1             # Install on Windows (from source)
+├── package.sh              # Build + package Linux release zip
+└── package-windows.bat     # Build + package Windows release zip (via jpackage)
 ```
 
 ---
@@ -164,7 +175,7 @@ All data is stored locally on your machine:
 
 | What | Where (Linux) | Where (Windows) |
 |---|---|---|
-| Sessions database | `~/.local/share/zhonyal/zhonyal.db` | `%LOCALAPPDATA%\Zhonyal\zhonyal.db` |
+| Sessions database | `~/.local/share/zhonyal/zhonyal.db` | next to `Zhonyal.exe` |
 | User profile | `~/.zhonyal/user.properties` | `%USERPROFILE%\.zhonyal\user.properties` |
 
 Uninstalling on Linux:
@@ -174,4 +185,4 @@ rm ~/.local/share/applications/zhonyal.desktop
 rm -rf ~/.zhonyal
 ```
 
-Uninstalling on Windows: delete `%LOCALAPPDATA%\Zhonyal` and the Start Menu shortcut.
+Uninstalling on Windows: delete the `Zhonyal` folder you extracted.
