@@ -45,11 +45,11 @@ Download JDK 25: [adoptium.net](https://adoptium.net)
 
 ## Install on Windows
 
-1. Download `Zhonyal-x.x.x-windows.zip` from [Releases](https://github.com/JxViii/Zhonyal/releases)
-2. Extract the zip anywhere you want
-3. Open the `Zhonyal` folder and double-click `Zhonyal.exe`
+1. Download `Zhonyal-x.x.x-Setup.exe` from [Releases](https://github.com/JxViii/Zhonyal/releases)
+2. Double-click it and follow the installer wizard
+3. Zhonyal appears in the Start Menu
 
-No Java installation needed — the JRE is bundled inside the zip.
+No Java installation needed — the JRE is bundled inside the installer.
 
 ---
 
@@ -74,13 +74,13 @@ cd Zhonyal
 bash install.sh
 ```
 
-**Windows** — requires JDK 25, run in Command Prompt:
+**Windows** — requires JDK 25 + [Inno Setup 6](https://jrsoftware.org/isdl.php), run in Command Prompt:
 ```bat
 git clone https://github.com/JxViii/Zhonyal.git
 cd Zhonyal
 package-windows.bat 1.0.0
 ```
-This produces `dist\Zhonyal-1.0.0-windows.zip` — extract it and run `Zhonyal.exe`.
+This produces `dist\Zhonyal-1.0.0-Setup.exe` — a self-contained installer, no Java needed to run it.
 
 **Create a Linux release zip:**
 ```bash
@@ -88,10 +88,10 @@ bash package.sh 1.0.0
 # output: dist/zhonyal-1.0.0.zip
 ```
 
-**Create a Windows release zip** (run on Windows):
+**Create a Windows installer** (run on Windows, requires Inno Setup 6):
 ```bat
 package-windows.bat 1.0.0
-# output: dist\Zhonyal-1.0.0-windows.zip
+# output: dist\Zhonyal-1.0.0-Setup.exe
 ```
 
 ---
@@ -185,4 +185,4 @@ rm ~/.local/share/applications/zhonyal.desktop
 rm -rf ~/.zhonyal
 ```
 
-Uninstalling on Windows: delete the `Zhonyal` folder you extracted.
+Uninstalling on Windows: Settings → Apps → Zhonyal → Uninstall.

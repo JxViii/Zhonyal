@@ -2,10 +2,15 @@
 setlocal
 pushd "%~dp0"
 
+rem Usage: package-windows.bat [version]
+rem Requires:
+rem   - JDK 25 (https://adoptium.net)
+rem   - Inno Setup 6 (https://jrsoftware.org/isdl.php)
+
 set VERSION=%1
 if "%VERSION%"=="" set VERSION=1.0.0
 
-rem Find JDK bin dir: JAVA_HOME > where jar > where javac
+rem ── Find JDK bin dir ────────────────────────────────────────────────────────
 if defined JAVA_HOME (
     set JDK_BIN=%JAVA_HOME%\bin\
     goto :found_jdk
@@ -22,17 +27,28 @@ popd & exit /b 1
 set JPACKAGE="%JDK_BIN%jpackage.exe"
 if not exist "%JDK_BIN%jpackage.exe" (
     echo ERROR: jpackage.exe not found in %JDK_BIN%
-    echo Set JAVA_HOME to your JDK installation directory, e.g.:
-    echo   set JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-25.0.1.9-hotspot
+    echo Set JAVA_HOME to your JDK installation directory.
     popd & exit /b 1
 )
 
-rem Build fat JAR
+rem ── Find Inno Setup compiler ─────────────────────────────────────────────────
+set ISCC=
+if exist "%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" set ISCC="%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe"
+if exist "%ProgramFiles%\Inno Setup 6\ISCC.exe"      set ISCC="%ProgramFiles%\Inno Setup 6\ISCC.exe"
+for /f "tokens=*" %%i in ('where ISCC 2^>nul') do if not defined ISCC set ISCC="%%i"
+if not defined ISCC (
+    echo ERROR: Inno Setup not found.
+    echo Download and install from: https://jrsoftware.org/isdl.php
+    popd & exit /b 1
+)
+
+rem ── Build fat JAR ────────────────────────────────────────────────────────────
 call build.bat
 if errorlevel 1 ( popd & exit /b 1 )
 
-echo =^> Packaging with jpackage...
-if exist "dist\package" rmdir /S /Q "dist\package"
+rem ── Build app-image (bundles JRE, no WiX needed) ────────────────────────────
+echo =^> Creating app-image...
+if exist "dist\appimage" rmdir /S /Q "dist\appimage"
 
 %JPACKAGE% ^
   --input dist ^
@@ -41,7 +57,7 @@ if exist "dist\package" rmdir /S /Q "dist\package"
   --name Zhonyal ^
   --app-version %VERSION% ^
   --type app-image ^
-  --dest dist\package ^
+  --dest dist\appimage ^
   --app-content images ^
   --app-content fonts ^
   --java-options "-Dawt.useSystemAAFontSettings=lcd_hrgb" ^
@@ -49,9 +65,15 @@ if exist "dist\package" rmdir /S /Q "dist\package"
 
 if errorlevel 1 ( echo jpackage failed. & popd & exit /b 1 )
 
-echo =^> Creating zip...
-powershell -Command "Compress-Archive -Path 'dist\package\Zhonyal' -DestinationPath 'dist\Zhonyal-%VERSION%-windows.zip' -Force"
+rem ── Package with Inno Setup ───────────────────────────────────────────────────
+echo =^> Building installer with Inno Setup...
+%ISCC% /DAppVersion=%VERSION% zhonyal.iss
+if errorlevel 1 ( echo Inno Setup failed. & popd & exit /b 1 )
 
-rmdir /S /Q "dist\package"
-echo =^> dist\Zhonyal-%VERSION%-windows.zip ready for GitHub Release
+rem ── Clean up temp app-image ───────────────────────────────────────────────────
+rmdir /S /Q "dist\appimage"
+
+echo.
+echo =^> dist\Zhonyal-%VERSION%-Setup.exe ready
+echo    Upload to GitHub Releases. Users just double-click to install.
 popd
