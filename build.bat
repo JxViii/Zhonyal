@@ -1,40 +1,30 @@
 @echo off
 setlocal
-
-set PROJECT_DIR=%~dp0
-set DIST_DIR=%PROJECT_DIR%dist
-set TMP_DIR=%DIST_DIR%\tmp
+pushd "%~dp0"
 
 echo =^> Compiling...
-if not exist "%PROJECT_DIR%out" mkdir "%PROJECT_DIR%out"
-javac -cp "%PROJECT_DIR%lib\*" -d "%PROJECT_DIR%out" -sourcepath "%PROJECT_DIR%" "%PROJECT_DIR%Main.java"
-if errorlevel 1 ( echo Compilation failed. & exit /b 1 )
-xcopy /E /I /Y "%PROJECT_DIR%i18n" "%PROJECT_DIR%out\i18n\" >nul
+if not exist "out" mkdir "out"
+javac -cp "lib\*" -d "out" -sourcepath "." Main.java
+if errorlevel 1 ( echo Compilation failed. & popd & exit /b 1 )
+xcopy /E /I /Y "i18n" "out\i18n\" >nul
 
 echo =^> Building fat JAR...
-if exist "%TMP_DIR%" rmdir /S /Q "%TMP_DIR%"
-mkdir "%TMP_DIR%"
+if exist "dist\tmp" rmdir /S /Q "dist\tmp"
+mkdir "dist\tmp"
 
-rem Extract all dependency JARs into tmp
-pushd "%TMP_DIR%"
-for %%f in ("%PROJECT_DIR%lib\*.jar") do (
-    jar xf "%%f"
-)
+pushd "dist\tmp"
+for %%f in ("..\..\lib\*.jar") do jar xf "%%f"
 popd
 
-rem Remove signature files that break the fat JAR
-if exist "%TMP_DIR%\META-INF" rmdir /S /Q "%TMP_DIR%\META-INF"
+if exist "dist\tmp\META-INF" rmdir /S /Q "dist\tmp\META-INF"
+xcopy /E /I /Y "out\*" "dist\tmp\" >nul
 
-rem Copy compiled classes and i18n
-xcopy /E /I /Y "%PROJECT_DIR%out\*" "%TMP_DIR%\" >nul
+mkdir "dist\tmp\META-INF"
+(echo Main-Class: Main & echo.) > "dist\tmp\META-INF\MANIFEST.MF"
 
-rem Write manifest
-mkdir "%TMP_DIR%\META-INF"
-(echo Main-Class: Main & echo.) > "%TMP_DIR%\META-INF\MANIFEST.MF"
+if not exist "dist" mkdir "dist"
+jar --create --file="dist\zhonyal.jar" --manifest="dist\tmp\META-INF\MANIFEST.MF" -C "dist\tmp" .
 
-rem Pack
-if not exist "%DIST_DIR%" mkdir "%DIST_DIR%"
-jar --create --file="%DIST_DIR%\zhonyal.jar" --manifest="%TMP_DIR%\META-INF\MANIFEST.MF" -C "%TMP_DIR%" .
-
-rmdir /S /Q "%TMP_DIR%"
+rmdir /S /Q "dist\tmp"
 echo =^> dist\zhonyal.jar ready
+popd
