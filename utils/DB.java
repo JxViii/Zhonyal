@@ -116,11 +116,14 @@ public class DB {
             }
 
             conn.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            try { conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+            javax.swing.JOptionPane.showMessageDialog(null,
+                "Session could not be saved: " + e.getClass().getSimpleName() + ": " + e.getMessage(),
+                "Zhonyal", javax.swing.JOptionPane.ERROR_MESSAGE);
         } finally {
-            try { conn.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
+            try { conn.setAutoCommit(true); } catch (Exception e) { e.printStackTrace(); }
         }
     }
 

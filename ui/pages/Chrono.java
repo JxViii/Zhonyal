@@ -1,13 +1,18 @@
 package ui.pages;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.time.Duration;
@@ -66,8 +71,22 @@ public class Chrono extends JWindow {
     setLocationRelativeTo(null);
 
     setAlwaysOnTop(true);
-    getContentPane().setBackground(Theme.BLACK);
-    setLayout(new BorderLayout());
+    setBackground(new Color(0, 0, 0, 0));
+
+    JPanel rounded = new JPanel(new BorderLayout()) {
+      @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Theme.BLACK);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+        g2.setColor(Theme.LL_GREY);
+        g2.setStroke(new BasicStroke(1.5f));
+        g2.drawRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 30, 30);
+        g2.dispose();
+      }
+    };
+    rounded.setOpaque(false);
+    setContentPane(rounded);
 
     //header
     setUpHeader();
@@ -93,6 +112,7 @@ public class Chrono extends JWindow {
     ticker.start();
 
   }
+
 
   public void collapse() {
     getContentPane().remove(header);
@@ -248,6 +268,7 @@ public class Chrono extends JWindow {
 
     stop.addActionListener(e -> {
 
+      ticker.stop();
       session.stop();
       dispose();
 

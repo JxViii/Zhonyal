@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
         System.setProperty("awt.useSystemAAFontSettings", "lcd_hrgb");
         System.setProperty("swing.aatext", "true");
+        System.setProperty("sun.java2d.uiScale", "1");
         DB.init();
         // DB.reset();
         SwingUtilities.invokeLater(() -> {
