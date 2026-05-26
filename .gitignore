@@ -1,0 +1,4 @@
+out/
+dist/
+zhonyal.db
+*.class
