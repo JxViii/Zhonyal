@@ -37,7 +37,7 @@ A desktop study tracker built with Java Swing. Track your sessions, manage your 
 | | Version |
 |---|---|
 | Java (to run) | 17 or later |
-| Java JDK (to build from source) | 25 |
+| Java JDK (to build from source) | **25** — required, lower versions will not compile |
 
 Download Java: [adoptium.net](https://adoptium.net)
 

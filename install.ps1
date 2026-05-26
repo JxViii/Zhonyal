@@ -11,10 +11,23 @@ if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
+# Build from source if no JAR present yet
+$Jar = "$ScriptDir\zhonyal.jar"
+if (-not (Test-Path $Jar)) {
+    if (Test-Path "$ScriptDir\build.bat") {
+        Write-Host "==> No JAR found, building from source..."
+        cmd /c "$ScriptDir\build.bat"
+        if ($LASTEXITCODE -ne 0) { Write-Host "Build failed." -ForegroundColor Red; exit 1 }
+        $Jar = "$ScriptDir\dist\zhonyal.jar"
+    } else {
+        Write-Host "ERROR: zhonyal.jar not found." -ForegroundColor Red; exit 1
+    }
+}
+
 Write-Host "==> Installing Zhonyal to $InstallDir..."
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
 
-Copy-Item "$ScriptDir\zhonyal.jar" "$InstallDir\" -Force
+Copy-Item "$Jar" "$InstallDir\zhonyal.jar" -Force
 Copy-Item "$ScriptDir\images"      "$InstallDir\" -Recurse -Force
 Copy-Item "$ScriptDir\fonts"       "$InstallDir\" -Recurse -Force
 
