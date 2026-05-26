@@ -86,11 +86,11 @@ public class Notes extends JPanel {
 
     grid = new JPanel(new FlowLayout( FlowLayout.LEADING, 20, 20));
     grid.setOpaque(false);
-    grid.setPreferredSize(new Dimension(1050,520));
+    grid.setPreferredSize(new Dimension(1010,420));
 
     JPanel deletePanel = new JPanel(new FlowLayout( FlowLayout.TRAILING ));
     deletePanel.setOpaque(false);
-    deletePanel.setPreferredSize(new Dimension(1050,40));
+    deletePanel.setPreferredSize(new Dimension(1010,40));
 
     Font delFont = new Font("Inter 18pt", Font.BOLD, 15);
 

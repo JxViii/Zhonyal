@@ -40,9 +40,9 @@ public class FileItem extends JPanel{
     this.file = file;
     this.delete = delete;
 
-    Font font = new Font("Inter 24pt ExtraBold", Font.PLAIN, 20);
+    Font font = new Font("Inter 24pt ExtraBold", Font.PLAIN, 18);
 
-    title = new JLabel(clip(this.file.getName(), font, 230));
+    title = new JLabel(clip(this.file.getName(), font, 220));
     title.setFont(font);
     title.setForeground(Theme.BLACK);
     title.setPreferredSize(new Dimension(230, 30));
@@ -64,7 +64,7 @@ public class FileItem extends JPanel{
 
     setLayout(new GridBagLayout());
     setOpaque(false);
-    setPreferredSize(new Dimension(320,103));
+    setPreferredSize(new Dimension(315,103));
     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
     addMouseListener(new MouseAdapter() {
@@ -100,7 +100,7 @@ public class FileItem extends JPanel{
 
     gbc.gridx = 1;
     gbc.gridy = 0;
-    gbc.insets = new Insets(0,5,0,0);
+    gbc.insets = new Insets(0,2,0,0);
     gbc.anchor = GridBagConstraints.CENTER;
 
     add(icon, gbc);
