@@ -54,7 +54,8 @@ public class FileUtils {
   public static File[] loadFiles( String path ){
 
     File filePath = new File( path );
-    return filePath.listFiles();
+    File[] files = filePath.listFiles();
+    return files != null ? files : new File[0];
 
   }
 
