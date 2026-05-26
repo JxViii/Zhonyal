@@ -39,19 +39,25 @@ A desktop study tracker built with Java Swing. Track your sessions, manage your 
 | Java (to run) | 17 or later |
 | Java JDK (to build from source) | 25 |
 
+Download Java: [adoptium.net](https://adoptium.net)
+
 ---
 
 ## Install from release
 
-1. Download the latest `zhonyal-x.x.x.zip` from [Releases](https://github.com/JxViii/Zhonyal/releases)
-2. Extract and run the install script:
+Download the latest `zhonyal-x.x.x.zip` from [Releases](https://github.com/JxViii/Zhonyal/releases) and extract it.
 
+**Linux**
 ```bash
-unzip zhonyal-x.x.x.zip
 bash zhonyal-x.x.x/install.sh
 ```
+Zhonyal will appear in your application launcher. Data lives at `~/.local/share/zhonyal/`.
 
-That's it. Zhonyal will appear in your application launcher. Your data lives at `~/.local/share/zhonyal/`.
+**Windows**
+```powershell
+powershell -ExecutionPolicy Bypass -File zhonyal-x.x.x\install.ps1
+```
+Zhonyal will appear in the Start Menu. Data lives at `%LOCALAPPDATA%\Zhonyal\`.
 
 ---
 
@@ -72,7 +78,7 @@ bash build.sh
 # output: dist/zhonyal.jar
 ```
 
-To create a release zip:
+To create a release zip (for both Linux and Windows):
 
 ```bash
 bash package.sh 1.0.0
@@ -134,8 +140,9 @@ Zhonyal/
 ├── fonts/                  # Bundled typefaces
 ├── lib/                    # Dependencies (fat-jar'd on build)
 │
-├── build.sh                # Compile + build fat JAR
-├── install.sh              # Build + install to ~/.local/share/zhonyal
+├── build.sh                # Compile + build fat JAR (Linux/Mac)
+├── install.sh              # Build + install on Linux
+├── install.ps1             # Install on Windows
 └── package.sh              # Build + package release zip
 ```
 
@@ -155,16 +162,16 @@ Zhonyal/
 
 All data is stored locally on your machine:
 
-| What | Where |
-|---|---|
-| Sessions database | `~/.local/share/zhonyal/zhonyal.db` |
-| User profile | `~/.zhonyal/user.properties` |
-| Notes (PDFs) | wherever you have them — Zhonyal stores paths, not copies |
+| What | Where (Linux) | Where (Windows) |
+|---|---|---|
+| Sessions database | `~/.local/share/zhonyal/zhonyal.db` | `%LOCALAPPDATA%\Zhonyal\zhonyal.db` |
+| User profile | `~/.zhonyal/user.properties` | `%USERPROFILE%\.zhonyal\user.properties` |
 
-Uninstalling is just:
-
+Uninstalling on Linux:
 ```bash
 rm -rf ~/.local/share/zhonyal
 rm ~/.local/share/applications/zhonyal.desktop
 rm -rf ~/.zhonyal
 ```
+
+Uninstalling on Windows: delete `%LOCALAPPDATA%\Zhonyal` and the Start Menu shortcut.

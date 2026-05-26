@@ -54,6 +54,8 @@ echo "    $INSTALL_DIR/zhonyal"
 EOF
 chmod +x "$STAGING/install.sh"
 
+cp "$PROJECT_DIR/install.ps1" "$STAGING/"
+
 cd "$PROJECT_DIR/dist"
 zip -r "$PACKAGE_NAME.zip" "$PACKAGE_NAME"
 rm -rf "$STAGING"
