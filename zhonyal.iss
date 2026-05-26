@@ -27,8 +27,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "dist\appimage\Zhonyal\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\Zhonyal"; Filename: "{app}\Zhonyal.exe"
-Name: "{autodesktop}\Zhonyal"; Filename: "{app}\Zhonyal.exe"; Tasks: desktopicon
+Name: "{group}\Zhonyal"; Filename: "{app}\Zhonyal.exe"; WorkingDir: "{app}"
+Name: "{autodesktop}\Zhonyal"; Filename: "{app}\Zhonyal.exe"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\Zhonyal.exe"; Description: "{cm:LaunchProgram,Zhonyal}"; Flags: nowait postinstall skipifsilent

@@ -17,6 +17,10 @@ public class Main {
                 new App();
             } catch (Exception e) {
                 e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(null,
+                    e.getClass().getSimpleName() + ": " + e.getMessage(),
+                    "Zhonyal failed to start",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         });
     }

@@ -14,7 +14,18 @@ import helpers.Split;
 
 public class DB {
 
-    private static final String URL = "jdbc:sqlite:zhonyal.db";
+    private static final String URL = buildUrl();
+
+    private static String buildUrl() {
+        if (System.getProperty("os.name", "").toLowerCase().contains("win")) {
+            String base = System.getenv("LOCALAPPDATA");
+            if (base == null) base = System.getProperty("user.home") + "\\AppData\\Local";
+            java.io.File dir = new java.io.File(base, "Zhonyal");
+            dir.mkdirs();
+            return "jdbc:sqlite:" + new java.io.File(dir, "zhonyal.db").getAbsolutePath();
+        }
+        return "jdbc:sqlite:zhonyal.db";
+    }
     private static Connection conn;
 
     public static void init() {
