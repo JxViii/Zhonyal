@@ -80,7 +80,7 @@ public class NotesViewer extends JPanel{
 
     grid = new JPanel(new BorderLayout(15,0));
     grid.setOpaque(false);
-    Dimension dGrid = new Dimension(1100,820);
+    Dimension dGrid = new Dimension(1100,700);
     grid.setPreferredSize(dGrid);
     grid.setMinimumSize(dGrid);
     grid.setMaximumSize(dGrid);

@@ -73,7 +73,7 @@ public class SessionsManager extends JPanel{
     scroll.setBorder(null);
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setPreferredSize(new Dimension(1040, 510));
+    scroll.setPreferredSize(new Dimension(1040, 450));
 
     scroll.addMouseWheelListener(e -> {
       JScrollBar bar = scroll.getVerticalScrollBar();
@@ -94,7 +94,7 @@ public class SessionsManager extends JPanel{
 
     JPanel deletePanel = new JPanel(new FlowLayout( FlowLayout.TRAILING, 20, 0 ));
     deletePanel.setOpaque(false);
-    deletePanel.setPreferredSize(new Dimension(1130,40));
+    deletePanel.setPreferredSize(new Dimension(1050,40));
 
     Font delFont = new Font("Inter 18pt", Font.BOLD, 15);
 

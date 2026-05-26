@@ -57,7 +57,7 @@ public class SessionItem extends JPanel{
     this.session = s;
     this.delete  = delete;
 
-    Dimension d = new Dimension(906,153);
+    Dimension d = new Dimension(906,143);
 
     Border padding = BorderFactory.createEmptyBorder(21,40,21,40);
 

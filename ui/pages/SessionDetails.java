@@ -76,7 +76,7 @@ public class SessionDetails extends JPanel{
     hero.setBorder(heroPadding);
     hero.setPreferredSize(new Dimension(1240, 192));
 
-    Font titleFont = new Font("BBH Bartle", Font.PLAIN, 48);
+    Font titleFont = new Font("BBH Bartle", Font.PLAIN, 42);
     Font descFont = new Font("Inter 24pt ExtraBold", Font.PLAIN, 24);
 
     title = new JLabel(LangManager.get("session.details.title"));
@@ -162,7 +162,7 @@ public class SessionDetails extends JPanel{
     scroll.setBorder(null);
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setPreferredSize(new Dimension(475, 640));
+    scroll.setPreferredSize(new Dimension(475, 550));
     // scroll.setMinimumSize(new Dimension(475, 640));
     scroll.setMaximumSize(new Dimension(475, Integer.MAX_VALUE));
     scroll.setAlignmentX(JPanel.LEFT_ALIGNMENT);
@@ -266,7 +266,7 @@ public class SessionDetails extends JPanel{
     // Row 3: totalTime centered, spans 3
     c.gridx = 0; c.gridy = 3; c.gridwidth = 3;
     c.anchor = GridBagConstraints.CENTER;
-    c.insets = new Insets(50, 0, 0, 0);
+    c.insets = new Insets(30, 0, 0, 0);
     statsGrid.add(totalTime, c);
 
     // Row 4: FULL
@@ -277,11 +277,11 @@ public class SessionDetails extends JPanel{
     c.gridwidth = 1;
     c.gridx = 0; c.gridy = 5;
     c.anchor = GridBagConstraints.WEST;
-    c.insets = new Insets(40, 30, 0, 0);
+    c.insets = new Insets(20, 30, 0, 0);
     statsGrid.add(studyTime, c);
 
     c.gridx = 2; c.anchor = GridBagConstraints.EAST;
-    c.insets = new Insets(40, 0, 0, 30);
+    c.insets = new Insets(20, 0, 0, 30);
     statsGrid.add(pauseTime, c);
 
     // Row 6: STUDY | | PAUSE
@@ -297,7 +297,7 @@ public class SessionDetails extends JPanel{
     // Row 7: focusRate centered, spans 3
     c.gridx = 0; c.gridy = 7; c.gridwidth = 3;
     c.anchor = GridBagConstraints.CENTER;
-    c.insets = new Insets(50, 0, 0, 0);
+    c.insets = new Insets(30, 0, 0, 0);
     statsGrid.add(focusRate, c);
 
     // Row 8: FOCUS RATE
@@ -311,9 +311,10 @@ public class SessionDetails extends JPanel{
 
     // FIXED ERROR WITH main size
 
-    main.setPreferredSize(new Dimension(1240,757));
-    main.setMaximumSize(new Dimension(1240,757));
-    main.setMinimumSize(new Dimension(1240,757));
+    Dimension d = new Dimension(1240,650);
+    main.setPreferredSize(d);
+    main.setMaximumSize(d);
+    main.setMinimumSize(d);
 
     main.add(col2);
 

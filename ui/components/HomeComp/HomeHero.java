@@ -81,8 +81,3 @@ public class HomeHero extends JPanel{
 
 
 }
-
-/*
-  TODO BUTTON TO CHANGE THE USER AND EMAIL
-  TODO DOCUMENTATION
-*/

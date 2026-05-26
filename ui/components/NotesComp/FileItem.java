@@ -64,7 +64,7 @@ public class FileItem extends JPanel{
 
     setLayout(new GridBagLayout());
     setOpaque(false);
-    setPreferredSize(new Dimension(350,103));
+    setPreferredSize(new Dimension(320,103));
     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
     addMouseListener(new MouseAdapter() {
@@ -82,7 +82,7 @@ public class FileItem extends JPanel{
 
     GridBagConstraints gbc = new GridBagConstraints();
 
-    int w = 0;
+    int w = 5;
 
     gbc.gridx = 0;
     gbc.gridy = 0;
@@ -100,7 +100,7 @@ public class FileItem extends JPanel{
 
     gbc.gridx = 1;
     gbc.gridy = 0;
-    gbc.insets = new Insets(0,20,0,0);
+    gbc.insets = new Insets(0,5,0,0);
     gbc.anchor = GridBagConstraints.CENTER;
 
     add(icon, gbc);

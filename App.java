@@ -1,4 +1,6 @@
 import java.awt.CardLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -39,8 +41,15 @@ public class App extends JFrame {
         setTitle("Zhonyal");
         setIconImage(new javax.swing.ImageIcon("images/Logo.png").getImage());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setSize(1440, 1024);
-        setResizable(false);
+        setSize(1353, 929);
+        setResizable(true);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                System.out.println(getWidth() + " " + getHeight());
+            }
+        });
 
         addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
