@@ -2,3 +2,5 @@ out/
 dist/
 zhonyal.db
 *.class
+.vscode/
+.claude/

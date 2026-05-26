@@ -104,7 +104,6 @@ public class Chrono extends JWindow {
     setMaximumSize(new Dimension(442, 124));
     setSize(442, 124);
     isCollapsed = true;
-    
     revalidate();
     repaint();
   }
