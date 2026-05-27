@@ -15,6 +15,9 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -87,6 +90,23 @@ public class Chrono extends JWindow {
     };
     rounded.setOpaque(false);
     setContentPane(rounded);
+
+    // If I don't put this it doesn drag at all
+
+    final int[] offset = new int[2];
+
+    rounded.addMouseListener(new MouseAdapter() {
+        @Override public void mousePressed(MouseEvent e) {
+            offset[0] = e.getX();
+            offset[1] = e.getY();
+        }
+    });
+
+    rounded.addMouseMotionListener(new MouseMotionAdapter() {
+        @Override public void mouseDragged(MouseEvent e) {
+            setLocation(e.getXOnScreen() - offset[0], e.getYOnScreen() - offset[1]);
+        }
+});
 
     //header
     setUpHeader();
