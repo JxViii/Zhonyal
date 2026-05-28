@@ -42,7 +42,7 @@ public class App extends JFrame {
         setIconImage(new javax.swing.ImageIcon("images/Logo.png").getImage());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(1353, 929);
-        setResizable(true);
+        setResizable(false);
 
         addComponentListener(new ComponentAdapter() {
             @Override

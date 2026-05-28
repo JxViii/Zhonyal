@@ -2,7 +2,6 @@ package ui.pages;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,11 +12,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.RoundRectangle2D;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -74,21 +72,20 @@ public class Chrono extends JWindow {
     setLocationRelativeTo(null);
 
     setAlwaysOnTop(true);
-    setBackground(new Color(0, 0, 0, 0));
+    setShape(new RoundRectangle2D.Double(0, 0, 442, 304, 30, 30));
 
     JPanel rounded = new JPanel(new BorderLayout()) {
       @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Theme.BLACK);
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
         g2.setColor(Theme.LL_GREY);
         g2.setStroke(new BasicStroke(1.5f));
         g2.drawRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 30, 30);
         g2.dispose();
       }
     };
-    rounded.setOpaque(false);
+    rounded.setBackground(Theme.BLACK);
     setContentPane(rounded);
 
     // If I don't put this it doesn drag at all
@@ -117,13 +114,6 @@ public class Chrono extends JWindow {
     //buttons
     setUpButtons();
 
-    addComponentListener(new ComponentAdapter() {
-      @Override public void componentResized(ComponentEvent e) {
-        int expectedH = isCollapsed ? 124 : 304;
-        if (getHeight() != expectedH) setSize(442, expectedH);
-      }
-    });
-
     ticker = new Timer(1000, e -> {
       totalTime.setText(fmt(session.getTotalTime()));
       splitTime.setText("+ " + fmt(session.getCurrent().getDuration()));
@@ -142,6 +132,7 @@ public class Chrono extends JWindow {
     setMinimumSize(new Dimension(442, 124));
     setMaximumSize(new Dimension(442, 124));
     setSize(442, 124);
+    setShape(new RoundRectangle2D.Double(0, 0, 442, 124, 30, 30));
     isCollapsed = true;
     revalidate();
     repaint();
@@ -155,6 +146,7 @@ public class Chrono extends JWindow {
     setMinimumSize(new Dimension(442, 304));
     setMaximumSize(new Dimension(442, 304));
     setSize(442, 304);
+    setShape(new RoundRectangle2D.Double(0, 0, 442, 304, 30, 30));
     isCollapsed = false;
     revalidate();
     repaint();
