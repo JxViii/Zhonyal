@@ -16,6 +16,7 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -117,6 +118,9 @@ public class OnboardingPage extends JPanel {
 
         c.gridy = 4; c.insets = new Insets(50, 0, 0, 0);
         content.add(createBtn, c);
+
+        c.gridy = 5; c.insets = new Insets(20, 0, 0, 0);
+        content.add(buildLangToggle(), c);
 
         return content;
     }
@@ -224,6 +228,47 @@ public class OnboardingPage extends JPanel {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.addActionListener(e -> submit());
         return btn;
+    }
+
+    private JButton buildLangToggle() {
+        String label = LangManager.isEnglish() ? "ES" : "EN";
+        JButton btn = new JButton(label) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                int w = getWidth(), h = getHeight();
+                g2.setColor(Theme.WHITE);
+                g2.setStroke(new BasicStroke(1.5f));
+                g2.drawRoundRect(0, 0, w - 1, h - 1, 20, 20);
+                g2.setFont(getFont());
+                FontMetrics fm = g2.getFontMetrics();
+                int x = (w - fm.stringWidth(getText())) / 2;
+                int y = (h + fm.getAscent() - fm.getDescent()) / 2;
+                g2.drawString(getText(), x, y);
+                g2.dispose();
+            }
+        };
+        btn.setFont(new Font("Inter 24pt ExtraBold", Font.PLAIN, 13));
+        btn.setForeground(Theme.WHITE);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setRolloverEnabled(false);
+        btn.setPreferredSize(new Dimension(60, 32));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btn.addActionListener(e -> switchLang());
+        return btn;
+    }
+
+    private void switchLang() {
+        Locale next = LangManager.isEnglish() ? Locale.forLanguageTag("es-ES") : Locale.ENGLISH;
+        LangManager.setLocale(next);
+        removeAll();
+        add(buildContent(), new GridBagConstraints());
+        revalidate();
+        repaint();
     }
 
     public static boolean patternMatches(String emailAddress, String regexPattern) {
