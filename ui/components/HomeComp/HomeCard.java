@@ -50,6 +50,12 @@ public class HomeCard extends JPanel {
     desc = new SpacingDesc(desc_, secColor);
 
     button = new TextAddButton(buttonTitle_, mainColor);
+    button.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (listener != null) listener.actionPerformed(null);
+        }
+    });
     // [         []          ]
 
     buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));

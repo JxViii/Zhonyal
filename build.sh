@@ -22,6 +22,15 @@ done
 # Remove signature files that would break the fat JAR
 rm -rf "$TMP_DIR/META-INF"
 
+# sqlite-jdbc bundles native libs for every OS/arch; keep only the current platform
+NATIVE_DIR="$TMP_DIR/org/sqlite/native"
+if [ -d "$NATIVE_DIR" ]; then
+    OS=$(uname -s)   # Linux, Darwin, Windows, …
+    ARCH=$(uname -m) # x86_64, aarch64, …
+    find "$NATIVE_DIR" -mindepth 1 -maxdepth 1 -type d ! -name "$OS" -exec rm -rf {} +
+    [ -d "$NATIVE_DIR/$OS" ] && find "$NATIVE_DIR/$OS" -mindepth 1 -maxdepth 1 -type d ! -name "$ARCH" -exec rm -rf {} +
+fi
+
 # Copy compiled classes and i18n bundles
 cp -r "$PROJECT_DIR/out/"* "$TMP_DIR/"
 
