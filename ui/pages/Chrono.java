@@ -152,6 +152,11 @@ public class Chrono extends JWindow {
 
     ticker = new Timer(1000, e -> {
       totalTime.setText(fmt(session.getTotalTime()));
+      int len = totalTime.getText().length();
+      if(len >= 7){
+        if(len == 7) moveCatAtHour(1);
+        else moveCatAtHour(2);
+      }
       splitTime.setText("+ " + fmt(session.getCurrent().getDuration()));
       endDate.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
     });
@@ -159,6 +164,37 @@ public class Chrono extends JWindow {
 
   }
 
+  public void moveCatAtHour(int type){
+
+    GridBagConstraints gbc = new GridBagConstraints();
+
+    int catTitle = 0, catSub = 0, catType = 0;
+
+    if(isCat){
+      if(type == 1){
+        catTitle = -100; catSub = -40; catType = 00;
+      }
+      else{
+        catTitle = -70; catSub = 10; catType = 40;
+      }
+    }
+
+    gbc.anchor = isCat ? GridBagConstraints.WEST : GridBagConstraints.CENTER;
+    gbc.gridy = 0;
+    gbc.insets = new Insets(0,catTitle,0,0);
+
+    main.add(totalTime, gbc);
+
+    gbc.gridy = 1;
+    gbc.insets = new Insets(0,catSub,0,0);
+
+    main.add(splitTime, gbc);
+
+    gbc.gridy = 2;
+    gbc.insets = new Insets(0,catType,0,0);
+
+    main.add(splitType, gbc);
+  }
 
   public void createCat(){
     catPanel = new JPanel();
@@ -278,16 +314,25 @@ public class Chrono extends JWindow {
   }
 
   public void setUpMain(){
+    JPanel aux = new JPanel(null);
+    aux.setOpaque(false);
     main = new JPanel(new GridBagLayout());
     main.setOpaque(false);
 
     totalTime = new JLabel("00:00");
 
-    Font totalFont = new Font("BBH Bartle", Font.PLAIN , 39);
+    Font totalFont = new Font("BBH Bartle", Font.PLAIN , 34);
     totalTime.setFont(totalFont);
     totalTime.setForeground(
       !isCat ? Theme.LILA : Theme.cat_LILA
      );
+
+    // int wMain = 350;
+
+    // Dimension timeD = new Dimension(wMain,30);
+    // totalTime.setMaximumSize(timeD);
+    // totalTime.setPreferredSize(timeD);
+    // totalTime.setMinimumSize(timeD);
 
     splitTime = new JLabel("+ 00:00");
     splitTime.setForeground(
