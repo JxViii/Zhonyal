@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -18,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -36,6 +38,13 @@ public class SessionStartButton extends JPanel {
     private JLabel sessionLabel;
     private JLabel titleFieldLabel;
     private JLabel timeLabel;
+    private JPanel field;
+
+    private JPanel catBtn;
+    private final ImageIcon catIcon = new ImageIcon("images/pets(1).png");
+    private final ImageIcon catIconHover = new ImageIcon("images/pets(2).png");
+    private JLabel catLabel;
+    private boolean isCatSelected = false;
 
     public SessionStartButton() {
         setLayout(new BorderLayout());
@@ -49,6 +58,26 @@ public class SessionStartButton extends JPanel {
         add(buildTitleBlock(), BorderLayout.NORTH);
         add(buildTitleField(), BorderLayout.CENTER);
         add(buildBottom(), BorderLayout.SOUTH);
+    }
+
+    public void clicked(){
+
+        newLabel.setForeground(Theme.cat_GREEN);
+        field.setBackground(Theme.cat_GREEN);
+        catLabel.setIcon(catIconHover);
+        revalidate();
+        repaint();
+
+    }
+
+    public void dfl(){
+
+        newLabel.setForeground(Theme.CYAN);
+        field.setBackground(Theme.CYAN);
+        catLabel.setIcon(catIcon);
+        revalidate();
+        repaint();
+        
     }
 
     private JPanel buildTitleBlock() {
@@ -86,8 +115,8 @@ public class SessionStartButton extends JPanel {
         wrapper.setOpaque(false);
         wrapper.setBorder(new EmptyBorder(24, 0, 24, 0));
 
-        JPanel field = new JPanel(new BorderLayout(10, 0));
-        field.setBackground(Theme.CYAN);
+        field = new JPanel(new BorderLayout(10, 0));
+        field.setBackground(isCatSelected ? Theme.cat_GREEN : Theme.CYAN);
         field.setBorder(new EmptyBorder(9, 18, 9, 18));
 
         titleFieldLabel = new JLabel(LangManager.get("sessions.start.titlefield"));
@@ -130,8 +159,35 @@ public class SessionStartButton extends JPanel {
         bottom.setOpaque(false);
 
         timeLabel = new JLabel(LangManager.get("sessions.start.now"));
-        timeLabel.setFont(new Font("Gochi Hand", Font.PLAIN, 32));
+        timeLabel.setFont(new Font("Gochi Hand", Font.PLAIN, 28));
         timeLabel.setForeground(Theme.WHITE);
+        timeLabel.setPreferredSize(new Dimension(150,50));
+
+        catBtn = new JPanel();
+        catBtn.setLayout(new GridBagLayout());
+        catBtn.setOpaque(false);
+        catBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        catBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                if(!isCatSelected){
+                    isCatSelected = true;
+                    clicked();
+                } else {
+                    isCatSelected = false;
+                    dfl();
+                }
+                System.out.println("selected");
+            }
+        });
+
+        // Image rx = catIcon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+        // ImageIcon RX = new ImageIcon(rx);
+
+        catLabel = new JLabel();
+        catLabel.setIcon(catIcon);
+        catBtn.add(catLabel);
 
         plusBtn = new JPanel() {
             @Override
@@ -155,6 +211,7 @@ public class SessionStartButton extends JPanel {
         plusBtn.setOpaque(false);
 
         bottom.add(timeLabel, BorderLayout.WEST);
+        bottom.add(catBtn, BorderLayout.CENTER);
         bottom.add(plusBtn, BorderLayout.EAST);
         return bottom;
     }
@@ -196,6 +253,8 @@ public class SessionStartButton extends JPanel {
         String t = titleInput.getText();
         return t.equals(LangManager.get("sessions.start.placeholder")) ? "" : t;
     }
+
+    public boolean getCat(){ return isCatSelected; }
 
     public void refreshText() {
         startLabel.setText(LangManager.get("sessions.start.label"));

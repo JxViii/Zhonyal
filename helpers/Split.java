@@ -36,8 +36,12 @@ public class Split {
     return Duration.between(start, endTime);
 
   }
-  public Color getColor(){
+  public Color getColor(boolean isCat){
     
+    if(isCat){
+      return type == Type.STUDY ? Theme.cat_GREEN : Theme.cat_RED;
+    }
+
     return type == Type.STUDY ? Theme.LL_GREEN : Theme.L_RED;
 
   }

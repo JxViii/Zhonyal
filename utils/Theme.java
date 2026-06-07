@@ -20,6 +20,13 @@ public class Theme {
   public static final Color D_LILA = new Color(0x302689);
   public static final Color D_RED = new Color(0x5B0A21);
 
+// CAT VERSION
+  public static final Color cat_LILA = new Color(0xfff9d2);
+  public static final Color cat_RED = new Color(0xda5771);
+  public static final Color cat_GREEN = new Color(0xf6c83b);
+
+
+  // #fff9d2;
 
   public static final Color HIGHLIGHT_BUTTON = new Color(0x002523);
   public static final Color LOGOUT_BUTTON = new Color(0x373737);

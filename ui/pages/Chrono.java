@@ -21,7 +21,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.Timer;
@@ -39,6 +41,11 @@ import utils.Theme;
 public class Chrono extends JWindow {
 
   private Session session;
+  private JPanel elements;
+  private JPanel background;
+  private final ImageIcon catImg = new ImageIcon("images/gif240.gif");
+  private JPanel catPanel;
+  private JLabel cat;
 
   private JPanel header;
   private JPanel main;
@@ -60,11 +67,14 @@ public class Chrono extends JWindow {
   private Timer ticker;
 
   private Boolean isCollapsed;
+  private Boolean isCat = true;
+  private Boolean isCatHovered = false;
 
-  public Chrono(Frame owner, Session session) {
+  public Chrono(Frame owner, Session session, boolean isCat_) {
 
     super(owner);
 
+    this.isCat = isCat_;
     this.session = session;
     isCollapsed = false;
 
@@ -74,7 +84,11 @@ public class Chrono extends JWindow {
     setAlwaysOnTop(true);
     setShape(new RoundRectangle2D.Double(0, 0, 442, 304, 30, 30));
 
-    JPanel rounded = new JPanel(new BorderLayout()) {
+    JLayeredPane canvas = new JLayeredPane();
+    Dimension d = new Dimension(442,304);
+    canvas.setOpaque(false);
+
+    background = new JPanel(new BorderLayout()) {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
@@ -85,25 +99,47 @@ public class Chrono extends JWindow {
         g2.dispose();
       }
     };
-    rounded.setBackground(Theme.BLACK);
-    setContentPane(rounded);
+
+    background.setPreferredSize(d);
+    background.setOpaque(true);
+    background.setBackground(Theme.BLACK);
+    background.setBounds(0, 0, 442, 304);
+
+    elements = new JPanel(new BorderLayout());
+
+    elements.setBounds(0, 0, 442, 304);
+    elements.setPreferredSize(d);
+    elements.setOpaque(false);
+
+    if(isCat){
+      createCat();
+      canvas.add(catPanel, JLayeredPane.PALETTE_LAYER);
+    }
+
+    canvas.add(background, JLayeredPane.DEFAULT_LAYER);
+    canvas.add(elements, JLayeredPane.MODAL_LAYER);
+
+    setContentPane(canvas);
 
     // If I don't put this it doesn drag at all
 
     final int[] offset = new int[2];
 
-    rounded.addMouseListener(new MouseAdapter() {
+    canvas.addMouseListener(new MouseAdapter() {
         @Override public void mousePressed(MouseEvent e) {
-            offset[0] = e.getX();
-            offset[1] = e.getY();
+            if(!isCatHovered){
+              offset[0] = e.getX();
+              offset[1] = e.getY();
+            }
         }
     });
 
-    rounded.addMouseMotionListener(new MouseMotionAdapter() {
+    canvas.addMouseMotionListener(new MouseMotionAdapter() {
         @Override public void mouseDragged(MouseEvent e) {
+          if(!isCatHovered)
             setLocation(e.getXOnScreen() - offset[0], e.getYOnScreen() - offset[1]);
         }
-});
+    });
 
     //header
     setUpHeader();
@@ -124,11 +160,54 @@ public class Chrono extends JWindow {
   }
 
 
+  public void createCat(){
+    catPanel = new JPanel();
+    catPanel.setOpaque(false);
+    catPanel.setPreferredSize(new Dimension(442,304));
+    catPanel.setBounds(180,0,315,315);
+    cat = new JLabel();
+    cat.setIcon(catImg);
+
+    catPanel.add(cat);
+
+    final int[] catoffset = new int[2];
+
+    cat.addMouseListener(new MouseAdapter() {
+        @Override public void mouseEntered(MouseEvent e) {
+            isCatHovered = true;
+            System.out.println("ENTER CAT");
+        }
+
+        @Override public void mouseExited(MouseEvent e) {
+            isCatHovered = false;
+            System.out.println("out CAT");
+        }
+    });
+
+    cat.addMouseListener(new MouseAdapter() {
+        @Override public void mousePressed(MouseEvent e) {
+            catoffset[0] = e.getX();
+            catoffset[1] = e.getY();
+        }
+    });
+
+    cat.addMouseMotionListener(new MouseMotionAdapter() {
+        @Override public void mouseDragged(MouseEvent e) {
+          int newX = catPanel.getX() + e.getX() - catoffset[0];
+          int newY = catPanel.getY() + e.getY() - catoffset[1];
+          catPanel.setLocation(newX, newY);
+        }
+    });
+  }
+
   public void collapse() {
-    getContentPane().remove(header);
-    getContentPane().remove(main);
-    getContentPane().remove(buttons);
-    getContentPane().add(buttons, BorderLayout.NORTH);
+    elements.remove(header);
+    elements.remove(main);
+    elements.remove(buttons);
+    catPanel.setVisible(false);
+    elements.add(buttons, BorderLayout.NORTH);
+    background.setBounds(0, 0, 442, 124);
+    elements.setBounds(0, 0, 442, 124);
     setMinimumSize(new Dimension(442, 124));
     setMaximumSize(new Dimension(442, 124));
     setSize(442, 124);
@@ -139,10 +218,13 @@ public class Chrono extends JWindow {
   }
 
   public void restore() {
-    getContentPane().remove(buttons);
-    getContentPane().add(header,  BorderLayout.NORTH);
-    getContentPane().add(main,    BorderLayout.CENTER);
-    getContentPane().add(buttons, BorderLayout.SOUTH);
+    elements.remove(buttons);
+    elements.add(header,  BorderLayout.NORTH);
+    elements.add(main,    BorderLayout.CENTER);
+    elements.add(buttons, BorderLayout.SOUTH);
+    catPanel.setVisible(true);
+    background.setBounds(0, 0, 442, 304);
+    elements.setBounds(0, 0, 442, 304);
     setMinimumSize(new Dimension(442, 304));
     setMaximumSize(new Dimension(442, 304));
     setSize(442, 304);
@@ -192,7 +274,7 @@ public class Chrono extends JWindow {
     header.add(title, BorderLayout.WEST);
     header.add(dateWrapper, BorderLayout.EAST);
 
-    add(header, BorderLayout.NORTH);
+    elements.add(header, BorderLayout.NORTH);
   }
 
   public void setUpMain(){
@@ -203,37 +285,48 @@ public class Chrono extends JWindow {
 
     Font totalFont = new Font("BBH Bartle", Font.PLAIN , 39);
     totalTime.setFont(totalFont);
-    totalTime.setForeground(Theme.LILA);
+    totalTime.setForeground(
+      !isCat ? Theme.LILA : Theme.cat_LILA
+     );
 
     splitTime = new JLabel("+ 00:00");
-    splitTime.setForeground(Theme.LL_GREEN);
+    splitTime.setForeground(
+      !isCat ? Theme.LL_GREEN : Theme.cat_GREEN
+    );
 
     Font splitTimeFont = new Font("Inter 24pt ExtraBold", Font.PLAIN, 30);
     splitTime.setFont(splitTimeFont);
 
     splitType = new JLabel(LangManager.get("split.study"));
-    Font splitTypeFont = new Font("Inter 18pt", Font.BOLD, 13);
+    Font splitTypeFont = new Font("Inter 24pt ExtraBold", Font.BOLD, 15);
     splitType.setFont(splitTypeFont);
     splitType.setForeground(Theme.WHITE);
 
     GridBagConstraints gbc = new GridBagConstraints();
 
+    int catTitle = 0, catSub = 0, catType = 0;
+
+    if(isCat){
+      catTitle = -140; catSub = -100; catType = -70;
+    }
+
+    gbc.anchor = isCat ? GridBagConstraints.WEST : GridBagConstraints.CENTER;
     gbc.gridy = 0;
-    gbc.insets = new Insets(0,0,0,0);
+    gbc.insets = new Insets(0,catTitle,0,0);
 
     main.add(totalTime, gbc);
 
     gbc.gridy = 1;
-    gbc.insets = new Insets(0,0,0,0);
+    gbc.insets = new Insets(0,catSub,0,0);
 
     main.add(splitTime, gbc);
 
     gbc.gridy = 2;
-    gbc.insets = new Insets(0,0,0,0);
+    gbc.insets = new Insets(0,catType,0,0);
 
     main.add(splitType, gbc);
 
-    add(main, BorderLayout.CENTER);
+    elements.add(main, BorderLayout.CENTER);
   }
 
   public void setUpButtons(){
@@ -273,7 +366,7 @@ public class Chrono extends JWindow {
                     LangManager.get("split.study") : LangManager.get("split.pause");
 
       splitType.setText(type);
-      splitTime.setForeground(split.getColor());
+      splitTime.setForeground(split.getColor(isCat));
       splitTime.setText("+ 00:00");
 
     });
@@ -294,7 +387,7 @@ public class Chrono extends JWindow {
     buttons.add(p1, BorderLayout.CENTER);
     buttons.add(p3, BorderLayout.EAST);
 
-    add(buttons, BorderLayout.SOUTH);
+    elements.add(buttons, BorderLayout.SOUTH);
 
   }
 

@@ -79,7 +79,7 @@ public class SessionsHomePage extends JPanel{
       Session session = new Session(title);
       session.start();
       Frame owner = (Frame) SwingUtilities.getWindowAncestor(SessionsHomePage.this);
-      Chrono chrono = new Chrono(owner, session);
+      Chrono chrono = new Chrono(owner, session, start.getCat());
       chrono.setVisible(true);
 
       chrono.addWindowListener(new java.awt.event.WindowAdapter() {
