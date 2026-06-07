@@ -204,7 +204,7 @@ public class Chrono extends JWindow {
     elements.remove(header);
     elements.remove(main);
     elements.remove(buttons);
-    catPanel.setVisible(false);
+    if(catPanel != null) catPanel.setVisible(false);
     elements.add(buttons, BorderLayout.NORTH);
     background.setBounds(0, 0, 442, 124);
     elements.setBounds(0, 0, 442, 124);
@@ -222,7 +222,7 @@ public class Chrono extends JWindow {
     elements.add(header,  BorderLayout.NORTH);
     elements.add(main,    BorderLayout.CENTER);
     elements.add(buttons, BorderLayout.SOUTH);
-    catPanel.setVisible(true);
+    if(catPanel != null) catPanel.setVisible(true);
     background.setBounds(0, 0, 442, 304);
     elements.setBounds(0, 0, 442, 304);
     setMinimumSize(new Dimension(442, 304));
