@@ -30,7 +30,7 @@ A desktop study tracker built with Java Swing. Track your sessions, manage your 
 
 ### Floating chrono
 
-The session timer floats on top of whatever you're working on, with its animated cat companion.
+The session timer floats on top of whatever you're working on, with its animated cat companion (the cat timer is optional, you can also choose a default one).
 
 <p align="center">
   <img src="images/readme/timer-example.gif" alt="Floating chrono with the animated cat running over a code editor" width="800">
