@@ -28,7 +28,35 @@ A desktop study tracker built with Java Swing. Track your sessions, manage your 
 
 ## Screenshots
 
-> Coming soon
+### Floating chrono
+
+The session timer floats on top of whatever you're working on, with its animated cat companion.
+
+<p align="center">
+  <img src="images/readme/timer-example.gif" alt="Floating chrono with the animated cat running over a code editor" width="800">
+</p>
+
+### Home & sessions
+
+<table>
+  <tr>
+    <td align="center"><img src="images/readme/home.png" alt="Home page"><br><sub>Home</sub></td>
+    <td align="center"><img src="images/readme/sessions.png" alt="Sessions page"><br><sub>Start a new session</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/readme/registered-sessions.png" alt="Session history with date filters"><br><sub>Session history with date filters</sub></td>
+    <td align="center"><img src="images/readme/session-statistics.png" alt="Session details and statistics"><br><sub>Session details: splits, totals and focus rate</sub></td>
+  </tr>
+</table>
+
+### Notes
+
+<table>
+  <tr>
+    <td align="center"><img src="images/readme/files.png" alt="Notes library"><br><sub>Your PDF library</sub></td>
+    <td align="center"><img src="images/readme/file-viewer.png" alt="Built-in PDF viewer"><br><sub>Built-in PDF viewer</sub></td>
+  </tr>
+</table>
 
 ---
 
